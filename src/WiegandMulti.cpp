@@ -1,4 +1,5 @@
 #include "WiegandMulti.h"
+#include "PinChangeInterrupt.h"
 
 #if defined(ESP8266)
     #define INTERRUPT_ATTR ICACHE_RAM_ATTR
@@ -33,7 +34,7 @@ bool WIEGANDMULTI::available()
 
 void WIEGANDMULTI::begin(void (*ISR_D0)(void), void (*ISR_D1)(void))
 {
-	begin(10, 11, ISR_D0, ISR_D1); //change this also while you change pins for atmega1284
+	begin(22, 23, ISR_D0, ISR_D1); //change this also while you change pins for atmega1284
 }
 
 void WIEGANDMULTI::begin(int pinD0, int pinD1, void (*ISR_D0)(void), void (*ISR_D1)(void))
@@ -47,8 +48,8 @@ void WIEGANDMULTI::begin(int pinD0, int pinD1, void (*ISR_D0)(void), void (*ISR_
 	pinMode(pinD0, INPUT);					// Set D0 pin as input
 	pinMode(pinD1, INPUT);					// Set D1 pin as input
 	
-	attachInterrupt(digitalPinToInterrupt(pinD0), ISR_D0, FALLING);  // Hardware interrupt - high to low pulse
-	attachInterrupt(digitalPinToInterrupt(pinD1), ISR_D1, FALLING);  // Hardware interrupt - high to low pulse
+	attachPCINT(digitalPinToPCINT(pinD0), ISR_D0, FALLING);  // Hardware interrupt - high to low pulse
+	attachPCINT(digitalPinToPCINT(pinD1), ISR_D1, FALLING);  // Hardware interrupt - high to low pulse
 }
 
 INTERRUPT_ATTR void WIEGANDMULTI::ReadD0 ()

@@ -12,7 +12,8 @@ void Reader1D1Interrupt(void) {
 
 void setup() {
   Serial.begin(9600);
-  wg.begin(10, 11, Reader1D0Interrupt, Reader1D1Interrupt);
+  wg.begin(22, 23, Reader1D0Interrupt, Reader1D1Interrupt);
+  Serial.print("hello");
 }
 
 void loop() {
